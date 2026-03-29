@@ -64,9 +64,4 @@ public class orderController {
         return orderServices.getOrderWithProdukById(id);
     }
 
-    // semua order dengan produk
-    @GetMapping("/produk")
-    public List<Responsetemplate> getAllOrdersWithProduk() {
-        return orderServices.getAllOrdersWithProduk();
-
 }
