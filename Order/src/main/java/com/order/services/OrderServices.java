@@ -1,5 +1,8 @@
 package com.order.services;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.core.Queue;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
@@ -7,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.order.model.orderModel;
 import com.order.repository.OrderRepository;
 import com.order.vo.Responsetemplate;
@@ -19,14 +23,31 @@ public class OrderServices {
     private final RestTemplate restTemplate;
     private final DiscoveryClient discoveryClient;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
     public OrderServices(OrderRepository orderRepository, RestTemplate restTemplate, DiscoveryClient discoveryClient) {
         this.orderRepository = orderRepository;
         this.restTemplate = restTemplate;
         this.discoveryClient = discoveryClient;
     }
 
+    // public orderModel createOrder(orderModel order) {
+    // rabbitTemplate.convertAndSend(queue.getName(), order);
+    // return orderRepository.save(order);
+    // }
+
     public orderModel createOrder(orderModel order) {
-        return orderRepository.save(order);
+
+        // 1. simpan dulu ke database
+        orderModel savedOrder = orderRepository.save(order);
+
+        // 2. kirim ke RabbitMQ (pakai JSON)
+        rabbitTemplate.convertAndSend("orderQueue", savedOrder);
+
+        System.out.println("ORDER SENT TO QUEUE: " + savedOrder.getId());
+
+        return savedOrder;
     }
 
     public List<orderModel> getAllOrders() {
