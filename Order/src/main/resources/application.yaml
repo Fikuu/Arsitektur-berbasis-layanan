@@ -17,3 +17,6 @@ eureka:
 logging:
   level:
     com.netflix.discovery: INFO
+
+# jwt:
+#   secret: fikri-secret

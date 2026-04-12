@@ -40,4 +40,9 @@ public class ProductService {
     public void deleteProduct(Long id) {
         productRepo.deleteById(id);
     }
+
+    public List<ProductModel> searchProductsByName(String name) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'searchProductsByName'");
+    }
 }
