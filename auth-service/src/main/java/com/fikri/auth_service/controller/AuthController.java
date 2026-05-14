@@ -5,6 +5,9 @@ import com.fikri.auth_service.dto.LoginRequest;
 import com.fikri.auth_service.dto.RegisterRequest;
 import com.fikri.auth_service.model.User;
 import com.fikri.auth_service.service.AuthService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,17 +57,18 @@ public class AuthController {
         }
     }
 
+    @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/validate")
-    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String authHeader) {
-        try {
-            if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                String token = authHeader.substring(7);
-                Boolean isValid = authService.validateToken(token);
-                return ResponseEntity.ok(isValid);
-            }
-            return ResponseEntity.badRequest().body("Invalid token format");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token invalid");
+    public ResponseEntity<?> validateToken(
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.badRequest().body("Authorization header missing");
         }
+
+        String token = authHeader.substring(7);
+        Boolean isValid = authService.validateToken(token);
+
+        return ResponseEntity.ok(isValid);
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -78,36 +79,40 @@ public class OrderServices {
 
         List<Responsetemplate> responseList = new ArrayList<>();
 
-        // ambil order
         orderModel order = getOrderById(id);
 
-        // ambil service PRODUK dari Eureka
+        // 🔥 AMBIL SERVICE DARI EUREKA
         List<ServiceInstance> instances = discoveryClient.getInstances("PRODUCT");
 
         if (instances.isEmpty()) {
-            throw new RuntimeException("Service PRODUK tidak ditemukan di Eureka");
+            throw new RuntimeException("Service PRODUCT tidak ditemukan di Eureka");
         }
 
         ServiceInstance serviceInstance = instances.get(0);
 
-        // bentuk URL
+        // 🔥 FIX ENDPOINT (INI YANG PENTING)
         String url = serviceInstance.getUri().toString() + "/product/" + order.getProdukId();
 
         System.out.println("CALL API PRODUK: " + url);
 
-        // call API
         Produk produk;
+
         try {
-            produk = restTemplate.getForObject(url, Produk.class);
+            // 🔥 DEBUG RAW RESPONSE
+            ResponseEntity<Produk> response = restTemplate.getForEntity(url, Produk.class);
+
+            produk = response.getBody();
+
+            System.out.println("PRODUCT RESPONSE: " + produk);
+
         } catch (Exception e) {
-            throw new RuntimeException("Gagal mengambil data produk: " + e.getMessage());
+            throw new RuntimeException("Gagal ambil produk: " + e.getMessage());
         }
 
         if (produk == null) {
-            throw new RuntimeException("Produk tidak ditemukan");
+            throw new RuntimeException("Produk kosong / tidak ditemukan");
         }
 
-        // mapping response
         Responsetemplate vo = new Responsetemplate();
         vo.setOrder(order);
         vo.setProduk(produk);

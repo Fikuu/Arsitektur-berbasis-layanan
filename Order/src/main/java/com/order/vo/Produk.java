@@ -1,12 +1,21 @@
 package com.order.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import lombok.Data;
 
 @Data
+@JsonPropertyOrder({ "name", "description", "price" })
 public class Produk {
 
-    private Long id;
+    @JsonProperty("name")
     private String nama;
-    private double harga;
+
+    @JsonProperty("description")
+    private String deskripsi;
+
+    @JsonProperty("price")
+    private Long harga;
 
 }

@@ -42,7 +42,6 @@ public class ProductService {
     }
 
     public List<ProductModel> searchProductsByName(String name) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'searchProductsByName'");
     }
 }

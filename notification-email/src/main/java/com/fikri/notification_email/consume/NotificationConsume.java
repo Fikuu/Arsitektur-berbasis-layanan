@@ -33,7 +33,7 @@ public class NotificationConsume {
                 "\nTotal: " + order.getTotal();
 
         emailService.sendEmail(
-                "ervan@pnp.ac.id", // ganti email kamu
+                "fikuu23id@gmail.com", // ganti email kamu
                 subject,
                 body);
     }
