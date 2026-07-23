@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: order-service
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: order-service
+
+  template:
+    metadata:
+      labels:
+        app: order-service
+
+    spec:
+      containers:
+        - name: order-service
+          image: order-service:latest
+
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 8081
+
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://mysql-db:3306/microservice_db
+
+            - name: SPRING_DATASOURCE_USERNAME
+              value: root
+
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: root
+
+            - name: SPRING_RABBITMQ_HOST
+              value: rabbitmq
+
+            - name: SPRING_RABBITMQ_PORT
+              value: "5672"
+
+            - name: SPRING_RABBITMQ_USERNAME
+              value: guest
+
+            - name: SPRING_RABBITMQ_PASSWORD
+              value: guest
+
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://eureka-service:8761/eureka/

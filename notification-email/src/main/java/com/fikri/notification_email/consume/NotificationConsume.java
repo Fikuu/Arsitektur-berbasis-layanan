@@ -6,8 +6,13 @@ import org.springframework.stereotype.Service;
 import com.fikri.notification_email.model.NotificationModel;
 import com.fikri.notification_email.services.NotifcationServices;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class NotificationConsume {
+
+    private static final Logger log = LoggerFactory.getLogger(NotificationConsume.class);
 
     private final NotifcationServices emailService;
 
@@ -17,9 +22,7 @@ public class NotificationConsume {
 
     @RabbitListener(queues = "orderQueue")
     public void receiveMessage(NotificationModel order) {
-
-        System.out.println("🔥 MASUK CONSUMER");
-        System.out.println("RECEIVED ORDER: " + order.getId());
+        log.info("RECEIVED ORDER: {}", order.getId());
 
         String subject = "Order Baru Masuk!";
         String body = "Tugas Arsitektur Berbasis Layanan" +

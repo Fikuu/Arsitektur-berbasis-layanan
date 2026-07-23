@@ -1,0 +1,18 @@
+{
+	"ulid": "01KSS8K5CH90TFNSXXZHXF4199",
+	"minTime": 1780027278801,
+	"maxTime": 1780034400000,
+	"stats": {
+		"numSamples": 14122,
+		"numFloatSamples": 14122,
+		"numSeries": 1008,
+		"numChunks": 1008
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01KSS8K5CH90TFNSXXZHXF4199"
+		]
+	},
+	"version": 1
+}

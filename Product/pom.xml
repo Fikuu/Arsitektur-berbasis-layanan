@@ -80,6 +80,14 @@
             <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
 
+        <!-- ELK Logging -->
+    <dependency>
+        <groupId>net.logstash.logback</groupId>
+        <artifactId>logstash-logback-encoder</artifactId>
+        <version>8.0</version>
+    </dependency>
+
+
         <!-- SWAGGER -->
         <dependency>
             <groupId>org.springdoc</groupId>

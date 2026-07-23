@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: notification-email
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: notification-email
+
+  template:
+    metadata:
+      labels:
+        app: notification-email
+
+    spec:
+      containers:
+        - name: notification-email
+          image: notification-email:latest
+
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 8090
+
+          env:
+            - name: SPRING_RABBITMQ_HOST
+              value: rabbitmq
+
+            - name: SPRING_RABBITMQ_PORT
+              value: "5672"
+
+            - name: SPRING_RABBITMQ_USERNAME
+              value: guest
+
+            - name: SPRING_RABBITMQ_PASSWORD
+              value: guest
+
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://eureka-service:8761/eureka/

@@ -1,0 +1,18 @@
+{
+	"ulid": "01KSRWF908PKQQG301VZE0WD46",
+	"minTime": 1780014527223,
+	"maxTime": 1780020000000,
+	"stats": {
+		"numSamples": 2006,
+		"numFloatSamples": 2006,
+		"numSeries": 1008,
+		"numChunks": 1008
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01KSRWF908PKQQG301VZE0WD46"
+		]
+	},
+	"version": 1
+}

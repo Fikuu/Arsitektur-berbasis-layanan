@@ -1,0 +1,18 @@
+{
+	"ulid": "01KSS2DW5RS69GJ82AN8YAMN68",
+	"minTime": 1780020402543,
+	"maxTime": 1780027200000,
+	"stats": {
+		"numSamples": 2016,
+		"numFloatSamples": 2016,
+		"numSeries": 1008,
+		"numChunks": 1008
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01KSS2DW5RS69GJ82AN8YAMN68"
+		]
+	},
+	"version": 1
+}

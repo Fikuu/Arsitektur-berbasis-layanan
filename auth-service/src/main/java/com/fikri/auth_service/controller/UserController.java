@@ -11,23 +11,58 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserRepository userRepository;
 
+    // =====================================================
+    // GET ALL USERS
+    // =====================================================
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+
+        log.info("GET_ALL_USERS");
+
+        List<User> users = userRepository.findAll();
+
+        log.info("GET_ALL_USERS_SUCCESS | totalUsers={}", users.size());
+
+        return users;
     }
 
+    // =====================================================
+    // GET USER BY USERNAME
+    // =====================================================
     @Operation(security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping("/{username}")
     public User getUserByUsername(@PathVariable String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User tidak ditemukan"));
+
+        log.info("GET_USER | username={}", username);
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> {
+
+                    log.warn(
+                            "GET_USER_FAILED | username={} | reason=User not found",
+                            username);
+
+                    return new RuntimeException("User tidak ditemukan");
+                });
+
+        log.info(
+                "GET_USER_SUCCESS | username={} | role={}",
+                user.getUsername(),
+                user.getRole());
+
+        return user;
     }
 }
